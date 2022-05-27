@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        /*
+            函数作用域
+                - 调用函数时创建该作用域，调用结束后，该作用域销毁
+                - 每调用一次函数就会创建一个新的函数作用域，他们之间是互相独立的
+                - 在函数作用域中可以访问到全局的变量
+                - 在全局作用域中不能访问到函数作用域的变量
+                - 当在函数作用域中操作一个变量时，它会先在自身作用域中寻找，如果有就直接使用，
+                   如果没有向上一级寻找, 如果有就使用，如果没有将会继续向上一级作用域寻找，
+                   直到找到全局作用域，如果仍然没有则报错，ReferenceError
+                - 在函数中要使用全局变量可以使用window.a
+                - 在函数作用域中使用var声明的变量依然会有变量提升的特性，
+                    该变量会在所有代码被执行之前声明
+                - 在函数作用域中声明的函数也会在所有代码执行前被执行
+                - 在函数中不使用var定义的变量都会被视为全局变量
+                - 定义形参就相当于在函数作用域中声明了变量
+        */
+
+        // 创建一个变量
+        var a = "我是全局变量a";
+        function fun() {
+            var b = 100;
+            console.log("a = " + a); // a = 10
+        }
+
+        fun();
+        // console.log("b = " + b);  // Uncaught ReferenceError: b is not defined
+
+        function fun1() {
+            var a = "我是fun1中定义的变量";
+            function fun2() {
+                console.log("a = " + window.a);
+                console.log("a = " + a);
+            }
+            return fun2;
+        }
+
+        fun1()();  // a = 我是全局变量a
+                  //  函数作用域.html:34 a = 我是fun1中定义的变量
+
+        /* 
+        在函数作用域中使用var声明的变量依然会有变量提升的特性，
+        该变量会在所有代码被执行之前声明
+        */
+        function fun3 () {
+            console.log("a = " + a);
+            var a = "我是在fun3中定义的变量";
+        } 
+
+        fun3();  // a = undefined
+
+        /*
+        使用let定义的不会有hoisting 
+        */
+        // function fun4 () {
+        //     console.log("a = " + a);
+        //     let a = "我是在fun4中使用let定义的变量";
+        // }
+
+        // fun4(); // Uncaught ReferenceError: Cannot access 'a' before initialization
+
+        function fun5() {
+            a = 10;
+        }
+        fun5();
+        console.log("a = " + a);
+
+
+        function fun6(e) {
+            alert(e);
+        }
+        fun6(); // undefined
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
